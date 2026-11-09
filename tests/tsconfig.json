@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "outDir": "../dist/tests"
+  },
+  "references": [{ "path": "../packages/protocol" }, { "path": "../apps/agent" }],
+  "include": ["**/*.ts"]
+}

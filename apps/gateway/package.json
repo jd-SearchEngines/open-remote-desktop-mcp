@@ -1,0 +1,17 @@
+{
+  "name": "@open-remote-desktop-mcp/gateway",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
+    "@modelcontextprotocol/node": "^2.1.2",
+    "@open-remote-desktop-mcp/protocol": "workspace:*",
+    "ws": "^8.18.3"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "open-remote-desktop-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A single-device remote MCP gateway for DesktopCommanderMCP.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "gateway": "pnpm --filter @open-remote-desktop-mcp/gateway start",
+    "agent": "pnpm --filter @open-remote-desktop-mcp/agent start",
+    "test": "node --test --import tsx tests/**/*.test.ts",
+    "test:e2e": "tsx scripts/test-e2e.ts",
+    "clean": "tsc -b --clean"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.20.6",
+    "typescript": "^6.0.0-dev.20251108"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/client": "^2.4.0",
+    "@modelcontextprotocol/node": "^2.1.2",
+    "@modelcontextprotocol/server": "^2.4.0",
+    "ws": "^8.18.3"
+  }
+}
