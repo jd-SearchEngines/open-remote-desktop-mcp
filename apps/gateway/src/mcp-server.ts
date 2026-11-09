@@ -3,7 +3,10 @@ import type { ToolDefinition } from '@open-remote-desktop-mcp/protocol';
 import { DeviceRegistry } from './device-registry.js';
 
 export function createGatewayMcpServer(registry: DeviceRegistry, deviceId?: string): McpServer {
-  const server = new McpServer({ name: 'open-remote-desktop-mcp-gateway', version: '0.1.0' });
+  const server = new McpServer(
+    { name: 'open-remote-desktop-mcp-gateway', version: '0.1.0' },
+    { capabilities: { tools: {} } },
+  );
   const selectedDevice = deviceId ?? registry.firstDeviceId() ?? registry.anyDeviceId();
   const tools = selectedDevice ? registry.listTools(selectedDevice) : [];
 

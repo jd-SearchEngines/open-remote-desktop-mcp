@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "tsx src/index.ts"
+    "start": "node --env-file-if-exists=../../.env --import tsx src/index.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/client": "^2.4.0",

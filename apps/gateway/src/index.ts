@@ -24,7 +24,7 @@ const httpServer = createServer(async (req, res) => {
   if (req.url === '/healthz' && req.method === 'GET') {
     res.writeHead(200, { 'content-type': 'application/json' });
     const deviceId = registry.anyDeviceId() ?? null;
-    res.end(JSON.stringify({ ok: true, deviceId, online: deviceId ? Boolean(registry.getStatus(deviceId)?.online) : false }));
+    res.end(JSON.stringify({ ok: true, online: deviceId ? Boolean(registry.getStatus(deviceId)?.online) : false }));
     return;
   }
   if (req.url?.split('?')[0] === '/mcp') {

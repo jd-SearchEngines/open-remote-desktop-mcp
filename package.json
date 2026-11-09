@@ -11,10 +11,11 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "gateway": "pnpm --filter @open-remote-desktop-mcp/gateway start",
-    "agent": "pnpm --filter @open-remote-desktop-mcp/agent start",
+    "gateway": "node --env-file-if-exists=.env --import tsx apps/gateway/src/index.ts",
+    "agent": "node --env-file-if-exists=.env --import tsx apps/agent/src/index.ts",
     "test": "node --test --import tsx tests/**/*.test.ts",
     "test:e2e": "tsx scripts/test-e2e.ts",
+    "verify:remote": "node --env-file-if-exists=.env --import tsx scripts/verify-remote.ts",
     "clean": "tsc -b --clean"
   },
   "devDependencies": {

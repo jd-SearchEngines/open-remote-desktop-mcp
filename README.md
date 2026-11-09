@@ -51,6 +51,8 @@ source .env
 set +a
 ```
 
+The `pnpm gateway` and `pnpm agent` scripts load `.env` automatically on Node.js 22+, so the `source` step is only needed when starting the TypeScript entrypoints manually.
+
 ## Run locally
 
 Terminal 1 — Gateway:
@@ -101,6 +103,12 @@ Unit tests for workspace path isolation:
 
 ```bash
 node --test --import tsx tests/path-security.test.ts
+```
+
+To verify any local, tunneled, or public endpoint before adding it to ChatGPT:
+
+```bash
+MCP_ENDPOINT=https://your-host.example/mcp pnpm verify:remote
 ```
 
 ## Configuration
@@ -154,6 +162,26 @@ wss://mcp.example.com/device -> ws://gateway-host:8787/device
 ```
 
 The proxy must preserve WebSocket upgrades on `/device` and forward POST requests to `/mcp`. Set the Agent's `GATEWAY_URL` to the public `wss://.../device` URL, keep the device token private, and configure the Remote MCP Client with the public `https://.../mcp` URL plus the MCP Bearer token. TLS termination, DNS, tunnel credentials, and client-side permission to add/write Remote MCP tools are deployment or product-account concerns outside this repository.
+
+## OpenAI Secure MCP Tunnel
+
+For a local Mac, the preferred private connection is OpenAI's Secure MCP Tunnel. It keeps this Gateway on localhost and uses an outbound `tunnel-client` connection; you need a `tunnel_id` and a runtime API key from OpenAI Platform tunnel settings.
+
+Install the current `tunnel-client` release from the download link in Platform tunnel settings, then configure it to forward to this local HTTP MCP endpoint. The documented CLI shape is:
+
+```bash
+export CONTROL_PLANE_API_KEY="<runtime-key>"
+
+tunnel-client init \
+  --profile local-http \
+  --tunnel-id tunnel_<your-id> \
+  --mcp-server-url http://127.0.0.1:8787/mcp
+
+tunnel-client doctor --profile local-http --explain
+tunnel-client run --profile local-http
+```
+
+Keep `tunnel-client run` running together with `pnpm gateway` and `pnpm agent`. In ChatGPT web, choose Plugins → Add custom MCP server → Connection: Tunnel, select the same tunnel, configure the Gateway's Bearer authentication, and scan the tools. OpenAI documents that the tunnel must be associated with the target ChatGPT workspace and that the operator needs tunnel-use permission. The tunnel is for private testing; a public plugin still needs a stable public HTTPS endpoint.
 
 ## Error codes
 
