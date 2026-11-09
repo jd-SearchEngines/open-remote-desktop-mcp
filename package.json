@@ -15,6 +15,7 @@
     "agent": "node --env-file-if-exists=.env --import tsx apps/agent/src/index.ts",
     "test": "node --test --import tsx tests/**/*.test.ts",
     "test:e2e": "tsx scripts/test-e2e.ts",
+    "test:real": "node --env-file-if-exists=.env --import tsx scripts/test-real-local.ts",
     "verify:remote": "node --env-file-if-exists=.env --import tsx scripts/verify-remote.ts",
     "clean": "tsc -b --clean"
   },
