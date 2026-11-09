@@ -1,4 +1,5 @@
 import { McpServer, fromJsonSchema } from '@modelcontextprotocol/server';
+import type { CallToolResult } from '@modelcontextprotocol/client';
 import type { ToolDefinition } from '@open-remote-desktop-mcp/protocol';
 import { DeviceRegistry } from './device-registry.js';
 
@@ -24,6 +25,7 @@ function registerProxyTool(server: McpServer, registry: DeviceRegistry, deviceId
     async (args) => {
       try {
         const result = await registry.call(deviceId, tool.name, (args ?? {}) as Record<string, unknown>);
+        if (isCallToolResult(result)) return result;
         return {
           content: [{ type: 'text' as const, text: stringifyToolResult(result) }],
           structuredContent: isObject(result) ? result : undefined,
@@ -42,6 +44,10 @@ function registerProxyTool(server: McpServer, registry: DeviceRegistry, deviceId
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isCallToolResult(value: unknown): value is CallToolResult {
+  return isObject(value) && Array.isArray(value.content);
 }
 
 function stringifyToolResult(value: unknown): string {
