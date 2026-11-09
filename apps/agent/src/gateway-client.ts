@@ -81,6 +81,9 @@ export class GatewayAgent {
     if (message.type !== 'call') return;
 
     try {
+      if (isShellTool(message.tool) && !this.config.enableShell) {
+        throw Object.assign(new Error('Shell tools are disabled on this Agent'), { code: 'TOOL_DISABLED' });
+      }
       const args = await this.paths.validateArguments(message.tool, message.arguments ?? {});
       const result = await this.desktop.callTool(message.tool, args);
       socket.send(JSON.stringify({
@@ -105,6 +108,10 @@ export class GatewayAgent {
       }));
     }
   }
+}
+
+function isShellTool(tool: string): boolean {
+  return new Set(['start_process', 'read_process_output', 'interact_with_process', 'force_terminate', 'list_sessions']).has(tool);
 }
 
 function extractResultError(result: { content?: Array<{ type?: string; text?: string }> }): string {

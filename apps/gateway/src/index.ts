@@ -10,6 +10,9 @@ import { createDeviceWebSocketServer } from './websocket-server.js';
 const config = loadGatewayConfig();
 const deviceToken = process.env.DEVICE_TOKEN;
 if (!deviceToken) throw new Error('DEVICE_TOKEN is required');
+if (tokenMatches(deviceToken, config.apiToken)) {
+  throw new Error('MCP_API_TOKEN and DEVICE_TOKEN must be different');
+}
 
 const registry = new DeviceRegistry(deviceToken, config.callTimeoutMs, config.enableShell);
 const mcpHandler = createMcpHandler(
